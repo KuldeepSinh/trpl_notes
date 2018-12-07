@@ -11,7 +11,9 @@ use std::io::{self, Write};
 fn main() {
     println!("Guess a number.");
 
-    //User of rand
+    //Learn :
+    //1. how variable are defined using let
+    //2. In Rust, variables are immutable by default.
     let secret_number = rand::thread_rng().gen_range(1, 101);
 
     loop {
@@ -20,19 +22,20 @@ fn main() {
         io::stdout().flush().expect("Flushed.");
 
         //Read user input into a mutable variable of type String
+        //Learn: Use of "let mut" to define mutable variable.
         let mut guess = String::new();
         io::stdin()
             .read_line(&mut guess)
             .expect("Failed to read line.");
 
-        //parse to u32.
-        //Learn : We are using shadowing of guess with let.
+        //Learn : Use of shadowing to hide previous definition of variable used with same name.
         let guess: u32 = match guess.trim().parse() {
+            //Learn: User of Result type to handle error conditions.
             Ok(num) => num,
             Err(_) => continue,
         };
 
-        //Learn : use of match
+        //Learn : Use of match
         match guess.cmp(&secret_number) {
             Ordering::Less => println!("Too small!"),
             Ordering::Greater => println!("Too big"),
