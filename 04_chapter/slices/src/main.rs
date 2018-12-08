@@ -27,11 +27,32 @@ fn main() {
     let whole_slice = &s[..];
     println!("Whole string as a slice = {}", whole_slice);
 
-    let s = String::from("Beautiful World");
-    println!("\nFirst word = {}", first_word(&s));
+    let mut s = String::from("Beautiful World");
+    //Note : first_word(s: &String) takes immutable reference
+    let word = first_word(&s);
+    println!("\nFirst word = {}", word);
+    s.clear();
+    //Adding following line will make above line (s.clear();) invalid.
+    //println!("\nFirst word = {}", word);
+
+    //Reason : if we have an immutable reference to something,
+    //we cannot also take a mutable reference.
+    //Because "clear" needs to truncate the String,
+    //it tries to take a mutable reference, which fails.
+
+    //Note : string literals are slices.
+    //Type of "slc" in following line is "&str"
+    let slc = "Hello, world!";
+    println!("\nValue of slice is {}", slc);
+
+    //some other type of slice
+    let bs = [1, 2, 3, 4, 5];
+    let bslice = &bs[..3];
+    println!("Value of slice of b is {:?}", bslice);
 }
 
 //Following function uses slicing.
+//Note : first_word(s: &String) takes immutable reference to String.
 fn first_word(s: &String) -> &str {
     let bytes = s.as_bytes();
     for (index, &item) in bytes.iter().enumerate() {
