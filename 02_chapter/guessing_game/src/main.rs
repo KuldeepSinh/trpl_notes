@@ -9,12 +9,12 @@ use std::io::{self, Write};
 
 //main is the entry point.
 fn main() {
-    println!("Guess a number.");
+    println!("Guess a number between 1 and 200.");
 
     //Learn :
     //1. how variable are defined using let
     //2. In Rust, variables are immutable by default.
-    let secret_number = rand::thread_rng().gen_range(1, 101);
+    let secret_number = rand::thread_rng().gen_range(1, 201);
 
     loop {
         //refer : https://doc.rust-lang.org/std/macro.print.html
