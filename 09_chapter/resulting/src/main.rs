@@ -15,6 +15,7 @@ fn main() {
         Err(error) => panic!("There was an error opening the file: {:?}", error),
     };
 
+    //unwrap :
     //An alternative of match pattern above : unwrap method
     //unwrap, is a shortcut method that is implemented just like the match statement above.
     //If the Result value is the Ok variant,
@@ -23,6 +24,7 @@ fn main() {
     let f = File::open("hello.txt").unwrap();
     println!("Result = {:?}", f);
 
+    //expect :
     //Another method, expect, which is similar to unwrap, lets us also choose the panic! error message.
     //Using expect instead of unwrap and providing good error messages can convey your intent
     //and make tracking down the source of a panic easier.
