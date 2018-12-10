@@ -38,7 +38,74 @@ fn main() {
     println!("Key = {}", key);
     println!("Value = {}", value);
 
-    //Accessing HashMap Element
+    //Creating HasMaps using Collect method from Zipping 2 Vectors
+    let teams = vec![
+        String::from("Blue"),
+        String::from("Geen"),
+        String::from("Red"),
+    ];
+    let scores = vec![10, 20, 15];
+    let team_scores: HashMap<_, _> = teams.iter().zip(scores.iter()).collect();
+    println!("Team Scores = {:?}", team_scores);
+
+    //creating from a Vector of Tuples (Option#1)
+    let team_scores: HashMap<String, i32> = vec![
+        (String::from("Blue"), 10),
+        (String::from("Gren"), 20),
+        (String::from("Red"), 15),
+    ]
+    .iter()
+    .cloned() //Read : Reference => https://stackoverflow.com/questions/32354947/type-issue-with-iterator-collect
+    .collect();
+    println!("Team Scores = {:?}", team_scores);
+
+    //creating from a Vector of Tuples (Option#2)
+    let team_scores: HashMap<String, i32> = vec![
+        (String::from("Blue"), 10),
+        (String::from("Gren"), 20),
+        (String::from("Red"), 15),
+    ]
+    .into_iter() //Read : Reference => https://stackoverflow.com/questions/32354947/type-issue-with-iterator-collect
+    .collect();
+    println!("Team Scores = {:?}", team_scores);
+
+    //Accessing HashMap Element with get method
     let my_flag = flags.get(&key);
     println!("{:?}", my_flag);
+
+    //Accessing with iter
+    for pair in &team_scores {
+        println!("{:?}", pair);
+    }
+    for (key, value) in &team_scores {
+        println!("{}: {}", key, value);
+    }
+
+    //In a HashMap each key can be associated with only one value.
+    //Updating Option # 1: Overwrite
+    let mut scores = HashMap::new();
+    scores.insert(String::from("Blue"), 25);
+    scores.insert(String::from("Blue"), 15);
+    println!("Scores = {:?}", scores);
+
+    //Updating Option # 2: Only inserting a value if the key has no value
+    let mut scores = HashMap::new();
+    scores.insert(String::from("Blue"), 25);
+    scores.entry(String::from("Blue")).or_insert(50);
+    scores.entry(String::from("Yellow")).or_insert(50);
+    println!("Scores = {:?}", scores);
+
+    //Updating Option # 3: Updating based on old value.
+    let text = "hello world wonderful world";
+    let mut map = HashMap::new();
+    for word in text.split_whitespace() {
+        let count = map.entry(word).or_insert(0);
+        //The or_insert method actually returns a mutable reference (&mut V) to the value for this key.
+        //Here we store that mutable reference in the count variable,
+        //so in order to assign to that value, we must first dereference count using the asterisk (*).
+        *count += 1;
+        //The mutable reference goes out of scope at the end of the for loop,
+        //so all of these changes are safe and allowed by the borrowing rules.
+    }
+    println!("{:?}", map);
 }
