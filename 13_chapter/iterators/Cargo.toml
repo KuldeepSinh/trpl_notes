@@ -1,5 +1,5 @@
 [package]
-name = "modules"
+name = "iterators"
 version = "0.1.0"
 authors = ["Kuldeep Sinh Chauhan <chauhan.kuldeep.sinh@gmail.com>"]
 edition = "2018"
