@@ -31,3 +31,50 @@ fn main() {
     // let x = 5; //here, x is not defined as mutable
     // let y = &mut x;
 }
+
+//Use Case : Mock objects
+//A test double is the general programming concept for a type used in place of another type during testing.
+//Mock objects are specific types of test doubles that record what happens during a test
+//so you can assert that the correct actions took place.
+//Rust doesn’t have objects in the same sense as other languages have objects,
+//and Rust doesn’t have mock object functionality built into the standard library
+//as some other languages do. However, you can definitely create a struct that will serve
+//the same purposes as a mock object.
+
+pub trait Messenger {
+    fn send(&self, msg: &str);
+}
+
+pub struct LimitTracker<'a, T: 'a + Messenger> {
+    messenger: &'a T,
+    value: usize,
+    max: usize,
+}
+
+impl<'a, T> LimitTracker<'a, T>
+where
+    T: Messenger,
+{
+    pub fn new(messenger: &T, max: usize) -> LimitTracker<T> {
+        LimitTracker {
+            messenger,
+            value: 0,
+            max,
+        }
+    }
+
+    pub fn set_value(&mut self, value: usize) {
+        self.value = value;
+
+        let percentage_of_max = self.value as f64 / self.max as f64;
+        if percentage_of_max >= 0.75 && percentage_of_max < 0.9 {
+            self.messenger
+                .send("Warning : You have used up over 75% of your quota!");
+        } else if percentage_of_max >= 0.9 && percentage_of_max < 1.0 {
+            self.messenger
+                .send("Urgent warning : You have  used over 90% of your quota!");
+        } else if percentage_of_max >= 1.0 {
+            self.messenger.send("You are over your limit")
+        }
+    }
+}
