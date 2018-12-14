@@ -83,3 +83,10 @@ impl<T> Deref for MyBox<T> {
 pub fn hello(name: &str) {
     assert_eq!("hello", name);
 }
+
+//When the Deref trait is defined for the types involved,
+//Rust will analyze the types and use Deref::deref as many times as necessary
+//to get a reference to match the parameter’s type.
+//The number of times that Deref::deref needs to be inserted
+//is resolved at compile time,
+//so there is no runtime penalty for taking advantage of deref coercion!
